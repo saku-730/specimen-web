@@ -1,4 +1,4 @@
-module github.com/saku-730/gin-backend
+module github.com/saku-730/specimen-web
 
 go 1.25.0
 
