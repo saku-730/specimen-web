@@ -4,7 +4,7 @@ package database
 import (
 	"fmt" // エラーメッセージを整形するためにインポートするのだ
 	"log" 
-	"github.com/saku-730/specimen-web/backend/config/config"
+	"github.com/saku-730/specimen-web/backend/config"
 	"gorm.io/driver/postgres" // GORMのPostgreSQL用ドライバなのだ
 	"gorm.io/gorm"            // GORM本体なのだ
 )
