@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
-//	"github.com/gin-contrib/cors" 
+	"github.com/gin-contrib/cors" 
 	"github.com/saku-730/specimen-web/backend/config"
 	"github.com/saku-730/specimen-web/backend/internal/handler"
 	"github.com/saku-730/specimen-web/backend/internal/infrastructure"
@@ -44,6 +44,17 @@ func main() {
 
 	// 6. ルーターをセットアップする
 	router := gin.Default()
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:3000"},
+	    //AllowMethods:     []string{"PUT", "PATCH"},
+	    //AllowHeaders:     []string{"Origin"},
+	    //ExposeHeaders:    []string{"Content-Length"},
+	    //AllowCredentials: true,
+	    //AllowOriginFunc: func(origin string) bool {
+	    //  return origin == "https://github.com"
+	    //},
+	    //MaxAge: 12 * time.Hour,
+	  }))
 	apiV1 := router.Group("/api/v0-0-1") // APIのバージョニング
 	{
 		// userHandlerに、ルーターへのルート登録を依頼する

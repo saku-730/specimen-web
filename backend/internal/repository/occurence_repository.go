@@ -12,9 +12,9 @@ type OccurrenceRepository interface {
 	FindByID(id uint) (*model.Occurrence, error)
 	FindAll() ([]model.Occurrence, error)
 	FindByConditions(conditions *model.Occurrence) ([]model.Occurrence, error)
-	Create(occurrence *model.Occurrence) (*model.Occurrence, error)
-	Update(occurrence *model.Occurrence) (*model.Occurrence, error)
-	Delete(id uint) error
+	Create(tx *gorm.DB, occurrence *model.Occurrence) (*model.Occurrence, error)
+	Update(tx *gorm.DB, occurrence *model.Occurrence) (*model.Occurrence, error)
+	Delete(tx *gorm.DB, id uint) error
 }
 
 type occurrenceRepository struct {
@@ -55,8 +55,8 @@ func (r *occurrenceRepository) FindByConditions(conditions *model.Occurrence) ([
 }
 
 // Create は新しい発生情報を作成するのだ
-func (r *occurrenceRepository) Create(occurrence *model.Occurrence) (*model.Occurrence, error) {
-	if err := r.db.Create(occurrence).Error; err != nil {
+func (r *occurrenceRepository) Create(tx *gorm.DB, occurrence *model.Occurrence) (*model.Occurrence, error) {
+	if err := tx.Create(occurrence).Error; err != nil {
 		return nil, err
 	}
 	return occurrence, nil
