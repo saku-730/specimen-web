@@ -12,8 +12,8 @@ type UserRepository interface {
 	FindByID(id uint) (*model.User, error)
 	FindAll() ([]model.User, error)
 	Create(tx *gorm.DB, user *model.User) (*model.User, error)
-	Update(user *model.User) (*model.User, error)
-	Delete(id uint) error
+	Update(tx *gorm.DB, user *model.User) (*model.User, error)
+	Delete(tx *gorm.DB, id uint) error
 }
 
 // 2. userRepository は、UserRepositoryインターフェースの「実装」なのだ
@@ -59,19 +59,19 @@ func (r *userRepository) Create(tx *gorm.DB, user *model.User) (*model.User, err
 }
 
 // 7. Update は、ユーザー情報を更新するメソッドなのだ
-func (r *userRepository) Update(user *model.User) (*model.User, error) {
+func (r *userRepository) Update(tx *gorm.DB, user *model.User) (*model.User, error) {
 	// GORMのSaveメソッドを使って、レコードをUPDATEするのだ
 	// Saveは全フィールドを更新する。一部だけ更新したい場合はUpdateを使うのだ。
-	if err := r.db.Save(user).Error; err != nil {
+	if err := tx.Save(user).Error; err != nil {
 		return nil, err
 	}
 	return user, nil
 }
 
 // 8. Delete は、IDを元にユーザーを削除するメソッドなのだ
-func (r *userRepository) Delete(id uint) error {
+func (r *userRepository) Delete(tx *gorm.DB, id uint) error {
 	// GORMのDeleteメソッドを使って、レコードをDELETEするのだ
-	if err := r.db.Delete(&model.User{}, id).Error; err != nil {
+	if err := tx.Delete(&model.User{}, id).Error; err != nil {
 		return err
 	}
 	return nil

@@ -63,18 +63,17 @@ func (r *occurrenceRepository) Create(tx *gorm.DB, occurrence *model.Occurrence)
 }
 
 // Update は発生情報を更新するのだ
-func (r *occurrenceRepository) Update(occurrence *model.Occurrence) (*model.Occurrence, error) {
+func (r *occurrenceRepository) Update(tx *gorm.DB, occurrence *model.Occurrence) (*model.Occurrence, error) {
 	// ゼロ値でないフィールドだけを安全に更新するのだ
-	if err := r.db.Model(&model.Occurrence{OccurrenceID: occurrence.OccurrenceID}).Updates(occurrence).Error; err != nil {
+	if err := tx.Model(&model.Occurrence{OccurrenceID: occurrence.OccurrenceID}).Updates(occurrence).Error; err != nil {
 		return nil, err
 	}
-	// 更新後の最新の情報を取得して返すのだ
-	return r.FindByID(occurrence.OccurrenceID)
+	return occurrence, nil
 }
 
 // Delete はIDを元に発生情報を削除するのだ
-func (r *occurrenceRepository) Delete(id uint) error {
-	if err := r.db.Delete(&model.Occurrence{}, id).Error; err != nil {
+func (r *occurrenceRepository) Delete(tx *gorm.DB, id uint) error {
+	if err := tx.Delete(&model.Occurrence{}, id).Error; err != nil {
 		return err
 	}
 	return nil

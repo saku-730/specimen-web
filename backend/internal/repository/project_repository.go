@@ -11,8 +11,10 @@ import (
 type ProjectRepository interface {
 	FindByID(id uint) (*model.Project, error)
 	FindAll() ([]model.Project, error)
-	Create(project *model.Project) (*model.Project, error)
-	AddMember(member *model.ProjectMember) (*model.ProjectMember, error)
+	Create(tx *gorm.DB, project *model.Project) (*model.Project, error)
+	Update(tx *gorm.DB, project *model.Project) (*model.Project, error)
+	Delete(tx *gorm.DB, id uint) error
+	AddMember(tx *gorm.DB, member *model.ProjectMember) (*model.ProjectMember, error)
 }
 
 type projectRepository struct {
@@ -44,17 +46,33 @@ func (r *projectRepository) FindAll() ([]model.Project, error) {
 }
 
 // Create は新しいプロジェクトを作成するのだ
-func (r *projectRepository) Create(project *model.Project) (*model.Project, error) {
-	if err := r.db.Create(project).Error; err != nil {
+func (r *projectRepository) Create(tx *gorm.DB, project *model.Project) (*model.Project, error) {
+	if err := tx.Create(project).Error; err != nil {
 		return nil, err
 	}
 	return project, nil
 }
 
 // AddMember はプロジェクトに新しいメンバーを追加するのだ
-func (r *projectRepository) AddMember(member *model.ProjectMember) (*model.ProjectMember, error) {
-	if err := r.db.Create(member).Error; err != nil {
+func (r *projectRepository) AddMember(tx *gorm.DB, member *model.ProjectMember) (*model.ProjectMember, error) {
+	if err := tx.Create(member).Error; err != nil {
 		return nil, err
 	}
 	return member, nil
+}
+
+// Update はプロジェクト情報を更新するのだ
+func (r *projectRepository) Update(tx *gorm.DB, project *model.Project) (*model.Project, error) {
+	if err := tx.Save(project).Error; err != nil {
+		return nil, err
+	}
+	return project, nil
+}
+
+// Delete はIDを元にプロジェクトを削除するのだ
+func (r *projectRepository) Delete(tx *gorm.DB, id uint) error {
+	if err := tx.Delete(&model.Project{}, id).Error; err != nil {
+		return err
+	}
+	return nil
 }

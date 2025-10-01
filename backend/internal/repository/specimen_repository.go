@@ -12,9 +12,9 @@ type SpecimenRepository interface {
 	FindByID(id uint) (*model.Specimen, error)
 	FindAll() ([]model.Specimen, error)
 	FindByConditions(conditions *model.Specimen) ([]model.Specimen, error)
-	Create(specimen *model.Specimen) (*model.Specimen, error)
-	Update(specimen *model.Specimen) (*model.Specimen, error)
-	Delete(id uint) error
+	Create(tx *gorm.DB, specimen *model.Specimen) (*model.Specimen, error)
+	Update(tx *gorm.DB, specimen *model.Specimen) (*model.Specimen, error)
+	Delete(tx *gorm.DB, id uint) error
 }
 
 type specimenRepository struct {
@@ -60,24 +60,24 @@ func (r *specimenRepository) FindByConditions(conditions *model.Specimen) ([]mod
 }
 
 // Create は新しい標本を作成するのだ
-func (r *specimenRepository) Create(specimen *model.Specimen) (*model.Specimen, error) {
-	if err := r.db.Create(specimen).Error; err != nil {
+func (r *specimenRepository) Create(tx *gorm.DB, specimen *model.Specimen) (*model.Specimen, error) {
+	if err := tx.Create(specimen).Error; err != nil {
 		return nil, err
 	}
 	return specimen, nil
 }
 
 // Update は標本情報を更新するのだ
-func (r *specimenRepository) Update(specimen *model.Specimen) (*model.Specimen, error) {
-	if err := r.db.Model(&model.Specimen{SpecimenID: specimen.SpecimenID}).Updates(specimen).Error; err != nil {
+func (r *specimenRepository) Update(tx *gorm.DB, specimen *model.Specimen) (*model.Specimen, error) {
+	if err := tx.Model(&model.Specimen{SpecimenID: specimen.SpecimenID}).Updates(specimen).Error; err != nil {
 		return nil, err
 	}
-	return r.FindByID(specimen.SpecimenID)
+	return specimen, nil
 }
 
 // Delete はIDを元に標本を削除するのだ
-func (r *specimenRepository) Delete(id uint) error {
-	if err := r.db.Delete(&model.Specimen{}, id).Error; err != nil {
+func (r *specimenRepository) Delete(tx *gorm.DB, id uint) error {
+	if err := tx.Delete(&model.Specimen{}, id).Error; err != nil {
 		return err
 	}
 	return nil
