@@ -3,7 +3,6 @@ package model
 
 import (
 	"time"
-	"gorm.io/gorm"
 )
 
 // UserRole は "user_roles" テーブルに対応するのだ

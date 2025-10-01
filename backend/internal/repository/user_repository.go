@@ -2,7 +2,7 @@
 package repository
 
 import (
-	"github.com/saku-730/specimen-web/backend/internal/models" // modelパッケージをインポート
+	"github.com/saku-730/specimen-web/backend/internal/model"
 
 	"gorm.io/gorm"
 )
@@ -11,7 +11,7 @@ import (
 type UserRepository interface {
 	FindByID(id uint) (*model.User, error)
 	FindAll() ([]model.User, error)
-	Create(user *model.User) (*model.User, error)
+	Create(tx *gorm.DB, user *model.User) (*model.User, error)
 	Update(user *model.User) (*model.User, error)
 	Delete(id uint) error
 }
@@ -50,9 +50,9 @@ func (r *userRepository) FindAll() ([]model.User, error) {
 
 
 // 6. Create は、新しいユーザーをデータベースに作成するメソッドなのだ
-func (r *userRepository) Create(user *model.User) (*model.User, error) {
+func (r *userRepository) Create(tx *gorm.DB, user *model.User) (*model.User, error) {
 	// GORMのCreateメソッドを使って、レコードをINSERTするのだ
-	if err := r.db.Create(user).Error; err != nil {
+	if err := tx.Create(user).Error; err != nil {
 		return nil, err
 	}
 	return user, nil

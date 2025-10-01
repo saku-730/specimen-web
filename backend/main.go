@@ -4,8 +4,8 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gin-contrib/cors" 
-	"github.com/saku-730/specimen-web/backend/configs"
+//	"github.com/gin-contrib/cors" 
+	"github.com/saku-730/specimen-web/backend/config"
 	"github.com/saku-730/specimen-web/backend/internal/handler"
 	"github.com/saku-730/specimen-web/backend/internal/infrastructure"
 	"github.com/saku-730/specimen-web/backend/internal/repository"

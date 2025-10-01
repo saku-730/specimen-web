@@ -2,7 +2,6 @@
 package model
 
 import (
-	"time"
 	"gorm.io/datatypes" // JSON型のためにインポートするのだ
 )
 
