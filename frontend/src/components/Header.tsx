@@ -18,18 +18,23 @@ export default function Header() {
         <nav>
           <ul className="flex space-x-6">
             <li>
-              <Link href="/occurrences" className="text-gray-800 hover:text-blue-500">
+              <Link href="/occurrences/new" className="text-gray-800 hover:text-blue-500">
                 データ入力
               </Link>
             </li>
-            <li>
-              <Link href="/projects" className="text-gray-800 hover:text-blue-500">
-                プロジェクト
+	    <li>
+              <Link href="/occurrences" className="text-gray-800 hover:text-blue-500">
+                データ一覧
               </Link>
             </li>
             <li>
-              <Link href="/users" className="text-gray-800 hover:text-blue-500">
-                ユーザー
+              <Link href="/search" className="text-gray-800 hover:text-blue-500">
+                検索(まだ)
+              </Link>
+            </li>
+            <li>
+              <Link href="/setting" className="text-gray-800 hover:text-blue-500">
+                設定
               </Link>
             </li>
 	    <li>

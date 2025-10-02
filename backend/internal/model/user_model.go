@@ -5,19 +5,19 @@ import (
 	"time"
 )
 
-// UserRole は "user_roles" テーブルに対応するのだ
+// UserRole は "user_roles" テーブルに対応
 type UserRole struct {
 	RoleID   uint   `gorm:"primaryKey" json:"role_id"`
 	RoleName string `gorm:"not null;unique" json:"role_name"`
 }
 
-// User は "users" テーブルに対応するのだ
+// User は "users" テーブルに対応
 type User struct {
 	UserID       uint       `gorm:"primaryKey" json:"user_id"`
 	UserName     string     `gorm:"size:255;not null" json:"user_name"`
 	DisplayName  string     `gorm:"size:255;not null" json:"display_name"`
 	MailAddress  string     `gorm:"size:255;unique" json:"mail_address"`
-	Password     string     `json:"-"` // JSONには含めないようにするのだ
+	Password     string     `json:"-"`
 	RoleID       uint       `json:"role_id"`
 	CreatedAt    time.Time  `gorm:"default:now()" json:"created_at"`
 	Timezone     int16      `gorm:"not null" json:"timezone"`

@@ -199,7 +199,7 @@ export default function NewOccurrencePage() {
         lifestage: formData.lifestage,
         sex: formData.sex,
         body_length: formData.body_length ? Number(formData.body_length) : null,
-        created_at: new Date(formData.created_at).toISOString(),
+        created_at: formData.created_at,
         timezone: formData.timezone,
         language_id: Number(formData.language_id),
         note: formData.note,
@@ -219,7 +219,7 @@ export default function NewOccurrencePage() {
         user_id: Number(formData.observation_user_id),
         observation_method_id: Number(formData.observation_method_id),
         behavior: formData.behavior,
-        observed_at: new Date(formData.observed_at).toISOString(),
+        observed_at: formData.observed_at,
         timezone: formData.observation_timezone,
       },
       specimen: {
@@ -230,7 +230,7 @@ export default function NewOccurrencePage() {
       make_specimen: {
         user_id: Number(formData.make_specimen_user_id),
         date: new Date(formData.make_specimen_created_at).toISOString().split('T')[0], // YYYY-MM-DD
-        created_at: new Date(formData.make_specimen_created_at).toISOString(),
+        created_at: formData.make_specimen_created_at,
         timezone: formData.make_specimen_timezone,
       },
       identification: {
@@ -251,7 +251,7 @@ export default function NewOccurrencePage() {
       if (!response.ok) throw new Error('登録に失敗しました');
       
       alert('登録に成功しました！');
-      router.push('/occurrences');
+      router.push('/occurrences/new');
     } catch (error) {
       console.error(error);
       alert(`エラーが発生しました: ${error}`);
