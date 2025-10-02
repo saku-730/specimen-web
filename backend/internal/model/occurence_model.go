@@ -26,15 +26,15 @@ func (ClassificationJSON) TableName() string {
 // Occurrence は "occurrence" テーブルに対応するのだ
 type Occurrence struct {
 	OccurrenceID      uint      `gorm:"primaryKey" json:"occurrence_id"`
-	ProjectID         uint      `json:"project_id"`
+	ProjectID         *uint     `json:"project_id"`
 	UserID            uint      `json:"user_id"`
 	IndividualID      *int      `json:"individual_id"`
 	Lifestage         string    `json:"lifestage"`
 	Sex               string    `json:"sex"`
 	ClassificationID  uint      `json:"classification_id"`
-	PlaceID           uint      `json:"place_id"`
+	PlaceID           *uint     `json:"place_id"`
 	AttachmentGroupID *int      `json:"attachment_group_id"`
-	BodyLength        float64   `gorm:"type:numeric" json:"body_length"`
+	BodyLength        *float64  `gorm:"type:numeric" json:"body_length"`
 	LanguageID        *uint     `json:"language_id"`
 	Note              string    `json:"note"`
 	CreatedAt         time.Time `gorm:"default:now()" json:"created_at"`

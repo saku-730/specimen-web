@@ -13,33 +13,33 @@ import (
 // --- Structs for simple CRUD ---
 
 type CreateOccurrenceRequest struct {
-	ProjectID         uint    `json:"project_id"`
-	UserID            uint    `json:"user_id"`
-	IndividualID      *int    `json:"individual_id"`
-	Lifestage         string  `json:"lifestage"`
-	Sex               string  `json:"sex"`
-	ClassificationID  uint    `json:"classification_id"`
-	PlaceID           uint    `json:"place_id"`
-	AttachmentGroupID *int    `json:"attachment_group_id"`
-	BodyLength        float64 `json:"body_length"`
-	LanguageID        uint    `json:"language_id"`
-	Note              string  `json:"note"`
-	Timezone          int16   `json:"timezone"`
+	ProjectID         uint      `json:"project_id"`
+	UserID            uint      `json:"user_id"`
+	IndividualID      *int      `json:"individual_id"`
+	Lifestage         string    `json:"lifestage"`
+	Sex               string    `json:"sex"`
+	ClassificationID  uint      `json:"classification_id"`
+	PlaceID           uint      `json:"place_id"`
+	AttachmentGroupID *int      `json:"attachment_group_id"`
+	BodyLength        *float64  `json:"body_length"`
+	LanguageID        uint      `json:"language_id"`
+	Note              string    `json:"note"`
+	Timezone          int16     `json:"timezone"`
 }
 
 type UpdateOccurrenceRequest struct {
-	ProjectID         uint    `json:"project_id"`
-	UserID            uint    `json:"user_id"`
-	IndividualID      *int    `json:"individual_id"`
-	Lifestage         string  `json:"lifestage"`
-	Sex               string  `json:"sex"`
-	ClassificationID  uint    `json:"classification_id"`
-	PlaceID           uint    `json:"place_id"`
-	AttachmentGroupID *int    `json:"attachment_group_id"`
-	BodyLength        float64 `json:"body_length"`
-	LanguageID        uint    `json:"language_id"`
-	Note              string  `json:"note"`
-	Timezone          int16   `json:"timezone"`
+	ProjectID         uint      `json:"project_id"`	
+	UserID            uint      `json:"user_id"`
+	IndividualID      *int      `json:"individual_id"`
+	Lifestage         string    `json:"lifestage"`
+	Sex               string    `json:"sex"`
+	ClassificationID  uint      `json:"classification_id"`
+	PlaceID           uint      `json:"place_id"`
+	AttachmentGroupID *int      `json:"attachment_group_id"`
+	BodyLength        *float64  `json:"body_length"`
+	LanguageID        uint      `json:"language_id"`
+	Note              string    `json:"note"`
+	Timezone          int16     `json:"timezone"`
 }
 
 // --- Structs for Full Occurrence Form ---
@@ -55,16 +55,16 @@ type FullOccurrenceRequest struct {
 }
 
 type OccurrencePayload struct {
-	ProjectID    uint    `json:"project_id"`
-	UserID       uint    `json:"user_id"`
-	IndividualID *int    `json:"individual_id"`
-	Lifestage    string  `json:"lifestage"`
-	Sex          string  `json:"sex"`
-	BodyLength   float64 `json:"body_length"`
-	CreatedAt    string  `json:"created_at"`
-	Timezone     int16   `json:"timezone"`
-	LanguageID   uint    `json:"language_id"`
-	Note         string  `json:"note"`
+	ProjectID    uint      `json:"project_id"`
+	UserID       uint      `json:"user_id"`
+	IndividualID *int      `json:"individual_id"`
+	Lifestage    string    `json:"lifestage"`	
+	Sex          string    `json:"sex"`
+	BodyLength   *float64  `json:"body_length"`
+	CreatedAt    string    `json:"created_at"`
+	Timezone     int16     `json:"timezone"`
+	LanguageID   uint      `json:"language_id"`
+	Note         string    `json:"note"`
 }
 
 type ClassificationPayload struct {
@@ -174,13 +174,13 @@ func (s *occurrenceService) CreateFullOccurrence(req FullOccurrenceRequest) erro
 			return err
 		}
 		occurrence := model.Occurrence{
-			ProjectID:        req.Occurrence.ProjectID,
+			ProjectID:        uintToPtr(req.Occurrence.ProjectID),
 			UserID:           req.Occurrence.UserID,
 			IndividualID:     req.Occurrence.IndividualID,
 			Lifestage:        req.Occurrence.Lifestage,
 			Sex:              req.Occurrence.Sex,
 			ClassificationID: classification.ClassificationID,
-			PlaceID:          place.PlaceID,
+			PlaceID:          uintToPtr(place.PlaceID),
 			BodyLength:       req.Occurrence.BodyLength,
 			LanguageID:       uintToPtr(req.Occurrence.LanguageID),
 			Note:             req.Occurrence.Note,
@@ -280,13 +280,13 @@ func (s *occurrenceService) FindOccurrencesByConditions(conditions *model.Occurr
 // CreateOccurrence は新しい発生情報を作成するのだ
 func (s *occurrenceService) CreateOccurrence(req CreateOccurrenceRequest) (*model.Occurrence, error) {
 	newOccurrence := &model.Occurrence{
-		ProjectID:         req.ProjectID,
+		ProjectID:         uintToPtr(req.ProjectID),
 		UserID:            req.UserID,
 		IndividualID:      req.IndividualID,
 		Lifestage:         req.Lifestage,
 		Sex:               req.Sex,
 		ClassificationID:  req.ClassificationID,
-		PlaceID:           req.PlaceID,
+		PlaceID:           uintToPtr(req.PlaceID),
 		AttachmentGroupID: req.AttachmentGroupID,
 		BodyLength:        req.BodyLength,
 		LanguageID:        uintToPtr(req.LanguageID),
@@ -321,13 +321,13 @@ func (s *occurrenceService) UpdateOccurrence(id uint, req UpdateOccurrenceReques
 		}
 
 		// リクエストの情報を元に、更新するフィールドを設定するのだ
-		target.ProjectID = req.ProjectID
+		target.ProjectID = uintToPtr(req.ProjectID)
 		target.UserID = req.UserID
 		target.IndividualID = req.IndividualID
 		target.Lifestage = req.Lifestage
 		target.Sex = req.Sex
 		target.ClassificationID = req.ClassificationID
-		target.PlaceID = req.PlaceID
+		target.PlaceID = uintToPtr(req.PlaceID)
 		target.AttachmentGroupID = req.AttachmentGroupID
 		target.BodyLength = req.BodyLength
 		target.LanguageID = uintToPtr(req.LanguageID)

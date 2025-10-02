@@ -39,7 +39,7 @@ type Specimen struct {
 	OccurrenceID      uint `json:"occurrence_id"`
 	SpecimenMethodID  *uint `json:"specimen_method_id"`
 	InstitutionID     *uint `json:"institution_id"`
-	CollectionID      *uint `gorm:"column:collectionid" json:"collection_id"` // SQLのカラム名が小文字なので合わせる
+	CollectionID      *uint `gorm:"column:collection_id" json:"collection_id"` // SQLのカラム名が小文字なので合わせる
 
 	// 関連
 	Occurrence       Occurrence        `gorm:"foreignKey:OccurrenceID" json:"occurrence"`

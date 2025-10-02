@@ -25,7 +25,7 @@ func NewDatabaseConnection(cfg *configs.Config) (*gorm.DB, error) {
 	}
 
 	// 4. 接続に成功したことをログに表示するのだ
-	log.Println("データベースへの接続に成功しました！")
+	log.Println("データベースへの接続に成功しました")
 
 	// 5. 成功したら、データベース操作ができるdbオブジェクトと、nil(エラーなし)を返すのだ
 	return db, nil

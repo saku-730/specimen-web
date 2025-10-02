@@ -123,7 +123,19 @@ export default function NewOccurrencePage() {
   // フォームの入力値をまとめて更新するハンドラ
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    let processedValue = value;
+
+    // 日時関連のフィールドであればフォーマットを調整
+    if (['created_at', 'observed_at', 'make_specimen_created_at', 'identificated_at'].includes(name)) {
+      // valueが空でなければDateオブジェクトに変換し、YYYY-MM-DDTHH:MM形式に整形
+      if (value) {
+        const date = new Date(value);
+        // getTimezoneOffsetを考慮してローカル時刻に変換
+        date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+        processedValue = date.toISOString().slice(0, 16);
+      }
+    }
+    setFormData(prev => ({ ...prev, [name]: processedValue }));
   };
 
   // ページ読み込み時に、ドロップダウンの選択肢をAPIからまとめて取得
@@ -224,7 +236,7 @@ export default function NewOccurrencePage() {
       identification: {
         user_id: Number(formData.identification_user_id),
         source_info: formData.source_info,
-        identificated_at: new Date(formData.identificated_at).toISOString(),
+        identificated_at: formData.identificated_at,
         timezone: formData.identification_timezone,
       },
     };
@@ -259,7 +271,7 @@ export default function NewOccurrencePage() {
         <legend className="text-lg font-semibold px-2">基本情報</legend>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
           <div>
-            <label className="block text-sm font-medium text-gray-700">プロジェクト名*</label>
+            <label className="block text-sm font-medium text-gray-700">プロジェクト名</label>
             <select name="project_id" value={formData.project_id} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
               <option value="">選択してください</option>
               {projects.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
@@ -317,8 +329,8 @@ export default function NewOccurrencePage() {
         <legend className="text-lg font-semibold px-2">観察</legend>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
             <div>
-                <label>観察者*</label>
-                <select name="observation_user_id" value={formData.observation_user_id} onChange={handleChange} required className="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                <label>観察者</label>
+                <select name="observation_user_id" value={formData.observation_user_id} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                     {users.map(u => <option key={u.user_id} value={u.user_id}>{u.user_name}</option>)}
                 </select>
             </div>
