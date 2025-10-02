@@ -32,6 +32,12 @@ export default function Header() {
                 ユーザー
               </Link>
             </li>
+	    <li>
+              <Link href="/login" className="text-gray-800 hover:text-blue-500">
+                再ログイン
+              </Link>
+            </li>
+
           </ul>
         </nav>
       </div>

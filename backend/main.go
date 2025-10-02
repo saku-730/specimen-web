@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	configs "github.com/saku-730/specimen-web/backend/config"
+	"github.com/saku-730/specimen-web/backend/config"
 	"github.com/saku-730/specimen-web/backend/internal/handler"
 	"github.com/saku-730/specimen-web/backend/internal/infrastructure"
 	"github.com/saku-730/specimen-web/backend/internal/repository"
@@ -59,11 +59,12 @@ func main() {
 
 	//setup router
 	router := gin.Default()
-	router.Use(cors.New(cors.Config{
-		AllowOrigins: []string{"http://localhost:3000"},
-	}))
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://localhost:3000"}
+	config.AllowCredentials = true
+	router.Use(cors.New(config))
 
-	apiV0_0_1 := router.Group("/api/v0-0-1") // APIのバージョニング
+	apiV0_0_1 := router.Group("/api/v0_0_1") // APIのバージョニング
 	{
 		userHandler.RegisterUserRoutes(apiV0_0_1)
 		occurrenceHandler.RegisterOccurrenceRoutes(apiV0_0_1)

@@ -19,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body className={`${inter.className} bg-gray-50`}>
+      <body className={inter.className}>
         {/* ② ここにヘッダーを配置！ */}
         <Header />
 

@@ -14,10 +14,10 @@ type UserRepository interface {
 	Create(tx *gorm.DB, user *model.User) (*model.User, error)
 	Update(tx *gorm.DB, user *model.User) (*model.User, error)
 	Delete(tx *gorm.DB, id uint) error
+	FindByEmail(email string)(*model.User, error)
 }
 
 // 2. userRepository は、UserRepositoryインターフェースの「実装」なのだ
-//    実際にデータベースと通信するロジックはここに書くのだ
 type userRepository struct {
 	db *gorm.DB
 }
@@ -76,3 +76,13 @@ func (r *userRepository) Delete(tx *gorm.DB, id uint) error {
 	}
 	return nil
 }
+
+// Find user by email address
+func (r *userRepository) FindByEmail(email string)(*model.User, error){
+	var user model.User
+	if err := r.db.Where("mail_address = ?", email).First(&user).Error; err != nil{
+		return nil, err
+	}
+	return &user, nil
+}
+
