@@ -1,4 +1,3 @@
-
 // backend/internal/service/specimen_service.go
 package service
 
@@ -31,6 +30,9 @@ type SpecimenService interface {
 	CreateSpecimen(req CreateSpecimenRequest) (*model.Specimen, error)
 	UpdateSpecimen(id uint, req UpdateSpecimenRequest) (*model.Specimen, error)
 	DeleteSpecimen(id uint) error
+	GetAllSpecimenMethods() ([]model.SpecimenMethod, error)
+	GetAllInstitutionCodes() ([]model.InstitutionIDCode, error)
+	GetAllCollectionCodes() ([]model.CollectionIDCode, error)
 }
 
 type specimenService struct {
@@ -57,9 +59,9 @@ func (s *specimenService) GetAllSpecimens() ([]model.Specimen, error) {
 func (s *specimenService) CreateSpecimen(req CreateSpecimenRequest) (*model.Specimen, error) {
 	newSpecimen := &model.Specimen{
 		OccurrenceID:     req.OccurrenceID,
-		SpecimenMethodID: req.SpecimenMethodID,
-		InstitutionID:    req.InstitutionID,
-		CollectionID:     req.CollectionID,
+		SpecimenMethodID: uintToPtr(req.SpecimenMethodID),
+		InstitutionID:    uintToPtr(req.InstitutionID),
+		CollectionID:     uintToPtr(req.CollectionID),
 	}
 
 	var createdSpecimen *model.Specimen
@@ -85,9 +87,9 @@ func (s *specimenService) UpdateSpecimen(id uint, req UpdateSpecimenRequest) (*m
 		}
 
 		target.OccurrenceID = req.OccurrenceID
-		target.SpecimenMethodID = req.SpecimenMethodID
-		target.InstitutionID = req.InstitutionID
-		target.CollectionID = req.CollectionID
+		target.SpecimenMethodID = uintToPtr(req.SpecimenMethodID)
+		target.InstitutionID = uintToPtr(req.InstitutionID)
+		target.CollectionID = uintToPtr(req.CollectionID)
 
 		updatedSpecimen, err = s.repo.Update(tx, target)
 		return err
@@ -104,4 +106,31 @@ func (s *specimenService) DeleteSpecimen(id uint) error {
 	return s.db.Transaction(func(tx *gorm.DB) error {
 		return s.repo.Delete(tx, id)
 	})
+}
+
+// GetAllSpecimenMethods は全ての標本作成方法を取得するのだ
+func (s *specimenService) GetAllSpecimenMethods() ([]model.SpecimenMethod, error) {
+	var methods []model.SpecimenMethod
+	if err := s.db.Find(&methods).Error; err != nil {
+		return nil, err
+	}
+	return methods, nil
+}
+
+// GetAllInstitutionCodes は全ての機関コードを取得するのだ
+func (s *specimenService) GetAllInstitutionCodes() ([]model.InstitutionIDCode, error) {
+	var codes []model.InstitutionIDCode
+	if err := s.db.Find(&codes).Error; err != nil {
+		return nil, err
+	}
+	return codes, nil
+}
+
+// GetAllCollectionCodes は全てのコレクションコードを取得するのだ
+func (s *specimenService) GetAllCollectionCodes() ([]model.CollectionIDCode, error) {
+	var codes []model.CollectionIDCode
+	if err := s.db.Find(&codes).Error; err != nil {
+		return nil, err
+	}
+	return codes, nil
 }

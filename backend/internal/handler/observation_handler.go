@@ -1,4 +1,3 @@
-
 // backend/internal/handler/observation_handler.go
 package handler
 
@@ -28,6 +27,7 @@ func (h *ObservationHandler) RegisterObservationRoutes(router *gin.RouterGroup) 
 		observations.PUT("/:id", h.UpdateObservation)
 		observations.DELETE("/:id", h.DeleteObservation)
 	}
+	router.GET("/observation-methods", h.GetAllObservationMethods)
 }
 
 func (h *ObservationHandler) GetObservationByID(c *gin.Context) {
@@ -109,4 +109,14 @@ func (h *ObservationHandler) DeleteObservation(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "観察情報を削除しました"})
+}
+
+// GetAllObservationMethods は全ての観察方法を取得するのだ
+func (h *ObservationHandler) GetAllObservationMethods(c *gin.Context) {
+	methods, err := h.observationService.GetAllObservationMethods()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "観察方法リストの取得に失敗しました"})
+		return
+	}
+	c.JSON(http.StatusOK, methods)
 }

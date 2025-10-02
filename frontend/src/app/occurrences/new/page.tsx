@@ -252,7 +252,7 @@ export default function NewOccurrencePage() {
   
   return (
     <form onSubmit={handleSubmit} className="space-y-6 bg-white p-8 rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold mb-6">新規発生情報 登録フォーム</h1>
+      <h1 className="text-2xl font-bold mb-6">新規データ 入力フォーム</h1>
 
       {/* --- 基本情報 --- */}
       <fieldset className="border p-4 rounded">
@@ -260,7 +260,7 @@ export default function NewOccurrencePage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
           <div>
             <label className="block text-sm font-medium text-gray-700">プロジェクト名*</label>
-            <select name="project_id" value={formData.project_id} onChange={handleChange} required className="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+            <select name="project_id" value={formData.project_id} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
               <option value="">選択してください</option>
               {projects.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
             </select>
@@ -330,8 +330,8 @@ export default function NewOccurrencePage() {
                 </select>
             </div>
             <div className="md:col-span-2"><label>行動</label><input name="behavior" value={formData.behavior} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" /></div>
-            <div><label>観察日時*</label><input type="datetime-local" name="observed_at" value={formData.observed_at} onChange={handleChange} required className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" /></div>
-            <div><label>観察日時タイムゾーン*</label><input type="number" name="observation_timezone" value={formData.observation_timezone} onChange={handleChange} required className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" /></div>
+            <div><label>観察日時</label><input type="datetime-local" name="observed_at" value={formData.observed_at} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" /></div>
+            <div><label>観察日時タイムゾーン</label><input type="number" name="observation_timezone" value={formData.observation_timezone} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" /></div>
         </div>
       </fieldset>
 
@@ -340,8 +340,8 @@ export default function NewOccurrencePage() {
         <legend className="text-lg font-semibold px-2">標本</legend>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
             <div>
-                <label>標本作成者*</label>
-                <select name="make_specimen_user_id" value={formData.make_specimen_user_id} onChange={handleChange} required className="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                <label>標本作成者</label>
+                <select name="make_specimen_user_id" value={formData.make_specimen_user_id} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                     {users.map(u => <option key={u.user_id} value={u.user_id}>{u.user_name}</option>)}
                 </select>
             </div>
@@ -352,7 +352,7 @@ export default function NewOccurrencePage() {
                     {specimenMethods.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}
                 </select>
             </div>
-            <div><label>標本作成日時*</label><input type="datetime-local" name="make_specimen_created_at" value={formData.make_specimen_created_at} onChange={handleChange} required className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" /></div>
+            <div><label>標本作成日時</label><input type="datetime-local" name="make_specimen_created_at" value={formData.make_specimen_created_at} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" /></div>
             <div><label>標本作成日時タイムゾーン*</label><input type="number" name="make_specimen_timezone" value={formData.make_specimen_timezone} onChange={handleChange} required className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" /></div>
             <div>
                 <label>機関コード</label>
@@ -376,13 +376,13 @@ export default function NewOccurrencePage() {
         <legend className="text-lg font-semibold px-2">同定</legend>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
             <div>
-                <label>同定者*</label>
-                <select name="identification_user_id" value={formData.identification_user_id} onChange={handleChange} required className="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                <label>同定者</label>
+                <select name="identification_user_id" value={formData.identification_user_id} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                     {users.map(u => <option key={u.user_id} value={u.user_id}>{u.user_name}</option>)}
                 </select>
             </div>
             <div className="md:col-span-2"><label>参考情報</label><textarea name="source_info" value={formData.source_info} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" /></div>
-            <div><label>同定日時*</label><input type="datetime-local" name="identificated_at" value={formData.identificated_at} onChange={handleChange} required className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" /></div>
+            <div><label>同定日時</label><input type="datetime-local" name="identificated_at" value={formData.identificated_at} onChange={handleChange} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" /></div>
             <div><label>同定日時タイムゾーン*</label><input type="number" name="identification_timezone" value={formData.identification_timezone} onChange={handleChange} required className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" /></div>
         </div>
       </fieldset>

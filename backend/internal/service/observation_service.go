@@ -1,4 +1,3 @@
-
 // backend/internal/service/observation_service.go
 package service
 
@@ -33,6 +32,7 @@ type ObservationService interface {
 	CreateObservation(req CreateObservationRequest) (*model.Observation, error)
 	UpdateObservation(id uint, req UpdateObservationRequest) (*model.Observation, error)
 	DeleteObservation(id uint) error
+	GetAllObservationMethods() ([]model.ObservationMethod, error)
 }
 
 type observationService struct {
@@ -57,7 +57,7 @@ func (s *observationService) CreateObservation(req CreateObservationRequest) (*m
 	newObservation := &model.Observation{
 		UserID:              req.UserID,
 		OccurrenceID:        req.OccurrenceID,
-		ObservationMethodID: req.ObservationMethodID,
+		ObservationMethodID: uintToPtr(req.ObservationMethodID),
 		Behavior:            req.Behavior,
 		Timezone:            req.Timezone,
 	}
@@ -85,7 +85,7 @@ func (s *observationService) UpdateObservation(id uint, req UpdateObservationReq
 
 		target.UserID = req.UserID
 		target.OccurrenceID = req.OccurrenceID
-		target.ObservationMethodID = req.ObservationMethodID
+		target.ObservationMethodID = uintToPtr(req.ObservationMethodID)
 		target.Behavior = req.Behavior
 		target.Timezone = req.Timezone
 
@@ -103,4 +103,13 @@ func (s *observationService) DeleteObservation(id uint) error {
 	return s.db.Transaction(func(tx *gorm.DB) error {
 		return s.repo.Delete(tx, id)
 	})
+}
+
+// GetAllObservationMethods は全ての観察方法を取得するのだ
+func (s *observationService) GetAllObservationMethods() ([]model.ObservationMethod, error) {
+	var methods []model.ObservationMethod
+	if err := s.db.Find(&methods).Error; err != nil {
+		return nil, err
+	}
+	return methods, nil
 }

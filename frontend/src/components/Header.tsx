@@ -19,7 +19,7 @@ export default function Header() {
           <ul className="flex space-x-6">
             <li>
               <Link href="/occurrences" className="text-gray-800 hover:text-blue-500">
-                発生情報
+                データ入力
               </Link>
             </li>
             <li>

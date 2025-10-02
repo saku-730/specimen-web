@@ -20,6 +20,7 @@ func NewOccurrenceHandler(occurrenceService service.OccurrenceService) *Occurren
 
 // RegisterOccurrenceRoutes はルーターに発生情報関連のエンドポイントを登録するのだ
 func (h *OccurrenceHandler) RegisterOccurrenceRoutes(router *gin.RouterGroup) {
+	// 発生情報のCRUD
 	occurrences := router.Group("/occurrences")
 	{
 		occurrences.GET("", h.GetAllOccurrences)
@@ -29,7 +30,30 @@ func (h *OccurrenceHandler) RegisterOccurrenceRoutes(router *gin.RouterGroup) {
 		occurrences.PUT("/:id", h.UpdateOccurrence)
 		occurrences.DELETE("/:id", h.DeleteOccurrence)
 	}
+
+	// フォーム用の選択肢などを取得するエンドポイント
+	router.GET("/languages", h.GetAllLanguages)
+
+	// フォーム全体を一度に登録するエンドポイント
+	router.POST("/full-occurrence", h.CreateFullOccurrence)
 }
+
+// CreateFullOccurrence はフォームからの全入力をまとめて登録するハンドラなのだ
+func (h *OccurrenceHandler) CreateFullOccurrence(c *gin.Context) {
+	var req service.FullOccurrenceRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "リクエストの形式が正しくありません: " + err.Error()})
+		return
+	}
+
+	if err := h.occurrenceService.CreateFullOccurrence(req); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "データの登録に失敗しました: " + err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusCreated, gin.H{"message": "データが正常に登録されました"})
+}
+
 
 func (h *OccurrenceHandler) GetOccurrenceByID(c *gin.Context) {
 	idStr := c.Param("id")
@@ -126,4 +150,13 @@ func (h *OccurrenceHandler) DeleteOccurrence(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "発生情報を削除しました"})
+}
+
+func (h *OccurrenceHandler) GetAllLanguages(c *gin.Context) {
+	languages, err := h.occurrenceService.GetAllLanguages()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "言語リストの取得に失敗しました"})
+		return
+	}
+	c.JSON(http.StatusOK, languages)
 }

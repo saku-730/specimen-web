@@ -19,6 +19,10 @@ type ClassificationJSON struct {
 	ClassClassification datatypes.JSON `gorm:"type:jsonb" json:"class_classification"`
 }
 
+func (ClassificationJSON) TableName() string {
+	return "classification_json"
+}
+
 // Occurrence は "occurrence" テーブルに対応するのだ
 type Occurrence struct {
 	OccurrenceID      uint      `gorm:"primaryKey" json:"occurrence_id"`
@@ -31,11 +35,15 @@ type Occurrence struct {
 	PlaceID           uint      `json:"place_id"`
 	AttachmentGroupID *int      `json:"attachment_group_id"`
 	BodyLength        float64   `gorm:"type:numeric" json:"body_length"`
-	LanguageID        uint      `json:"language_id"`
+	LanguageID        *uint     `json:"language_id"`
 	Note              string    `json:"note"`
 	CreatedAt         time.Time `gorm:"default:now()" json:"created_at"`
 	Timezone          int16     `gorm:"not null" json:"timezone"`
 
 	// 関連
 	Attachments []Attachment `gorm:"many2many:attachment_group;" json:"attachments"` // 多対多
+}
+
+func (Occurrence) TableName() string {
+	return "occurrence"
 }

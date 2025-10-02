@@ -23,8 +23,8 @@ export default function HomePage() {
         
         {/* カード1: 発生情報 */}
         <Link href="/occurrences/new" className="block p-6 bg-white rounded-lg border border-gray-200 shadow-md hover:shadow-lg hover:bg-gray-50 transition">
-          <h2 className="text-xl font-semibold mb-2 text-gray-900">データ登録</h2>
-          <p className="text-gray-700 mb-4">データを新規登録します。</p>
+          <h2 className="text-xl font-semibold mb-2 text-gray-900">データ入力</h2>
+          <p className="text-gray-700 mb-4">データを新規入力します。</p>
           <div className="flex items-center text-blue-600 font-medium">
             入力画面へ <FaChevronRight className="ml-2" />
           </div>

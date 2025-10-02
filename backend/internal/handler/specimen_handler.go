@@ -1,4 +1,3 @@
-
 // backend/internal/handler/specimen_handler.go
 package handler
 
@@ -28,6 +27,9 @@ func (h *SpecimenHandler) RegisterSpecimenRoutes(router *gin.RouterGroup) {
 		specimens.PUT("/:id", h.UpdateSpecimen)
 		specimens.DELETE("/:id", h.DeleteSpecimen)
 	}
+	router.GET("/specimen-methods", h.GetAllSpecimenMethods)
+	router.GET("/institution-codes", h.GetAllInstitutionCodes)
+	router.GET("/collection-codes", h.GetAllCollectionCodes)
 }
 
 func (h *SpecimenHandler) GetSpecimenByID(c *gin.Context) {
@@ -109,4 +111,34 @@ func (h *SpecimenHandler) DeleteSpecimen(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "標本を削除しました"})
+}
+
+// GetAllSpecimenMethods は全ての標本作成方法を取得するのだ
+func (h *SpecimenHandler) GetAllSpecimenMethods(c *gin.Context) {
+	methods, err := h.specimenService.GetAllSpecimenMethods()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "標本作成方法リストの取得に失敗しました"})
+		return
+	}
+	c.JSON(http.StatusOK, methods)
+}
+
+// GetAllInstitutionCodes は全ての機関コードを取得するのだ
+func (h *SpecimenHandler) GetAllInstitutionCodes(c *gin.Context) {
+	codes, err := h.specimenService.GetAllInstitutionCodes()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "機関コードリストの取得に失敗しました"})
+		return
+	}
+	c.JSON(http.StatusOK, codes)
+}
+
+// GetAllCollectionCodes は全てのコレクションコードを取得するのだ
+func (h *SpecimenHandler) GetAllCollectionCodes(c *gin.Context) {
+	codes, err := h.specimenService.GetAllCollectionCodes()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "コレクションコードリストの取得に失敗しました"})
+		return
+	}
+	c.JSON(http.StatusOK, codes)
 }

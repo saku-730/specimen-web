@@ -18,7 +18,7 @@ type Observation struct {
 	ObservationsID      uint      `gorm:"primaryKey" json:"observations_id"`
 	UserID              uint      `json:"user_id"`
 	OccurrenceID        uint      `json:"occurrence_id"`
-	ObservationMethodID uint      `json:"observation_method_id"`
+	ObservationMethodID *uint     `json:"observation_method_id"`
 	Behavior            string    `json:"behavior"`
 	ObservedAt          time.Time `gorm:"default:now()" json:"observed_at"`
 	Timezone            int16     `gorm:"not null" json:"timezone"`
