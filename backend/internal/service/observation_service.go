@@ -7,6 +7,8 @@ import (
 	"gorm.io/gorm"
 )
 
+
+
 // CreateObservationRequest は観察情報作成時のリクエストボディを表すのだ
 type CreateObservationRequest struct {
 	UserID              uint   `json:"user_id"`
