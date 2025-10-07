@@ -107,7 +107,6 @@ type IdentificationPayload struct {
 }
 
 
-// OccurrenceService は発生情報関連のビジネスロジックのインターフェースなのだ
 type OccurrenceService interface {
 	GetOccurrenceByID(id uint) (*model.Occurrence, error)
 	GetAllOccurrences() ([]model.Occurrence, error)

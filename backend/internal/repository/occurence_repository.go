@@ -7,6 +7,10 @@ import (
 	"gorm.io/gorm"
 )
 
+type SearchParams struct{
+	user
+}
+
 // OccurrenceRepository は発生情報関連のデータ操作の契約書なのだ
 type OccurrenceRepository interface {
 	FindByID(id uint) (*model.Occurrence, error)
@@ -15,13 +19,14 @@ type OccurrenceRepository interface {
 	Create(tx *gorm.DB, occurrence *model.Occurrence) (*model.Occurrence, error)
 	Update(tx *gorm.DB, occurrence *model.Occurrence) (*model.Occurrence, error)
 	Delete(tx *gorm.DB, id uint) error
+	Search(params SearchRepository) ([]handler.SerachResult, error)
 }
 
 type occurrenceRepository struct {
 	db *gorm.DB
 }
 
-// NewOccurrenceRepository は新しいリポジトリを生成するのだ
+// NewOccurrenceRepository make new Occurence data
 func NewOccurrenceRepository(db *gorm.DB) OccurrenceRepository {
 	return &occurrenceRepository{db: db}
 }
@@ -79,3 +84,11 @@ func (r *occurrenceRepository) Delete(tx *gorm.DB, id uint) error {
 	return nil
 }
 
+
+
+func (r *occurrenceRepository) Search(params SearchParams) ([]handler.SearchResult, error){
+	var occurrences []model.Occurrence
+
+	query := r.db.Model(&model.Occurrence{})
+
+}
