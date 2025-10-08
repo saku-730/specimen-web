@@ -50,7 +50,7 @@ func (h *OccurrenceHandler) CreateFullOccurrence(c *gin.Context) {
 func (h *OccurrenceHandler) GetAllLanguages(c *gin.Context) {
 	languages, err := h.occurrenceService.GetAllLanguages()
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "言語リストの取得に失敗しました"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Falied to get language list"})
 		return
 	}
 	c.JSON(http.StatusOK, languages)
@@ -60,7 +60,7 @@ func (h *OccurrenceHandler) Search(c *gin.Context) {
 	var req service.SearchRequest //for c.SholdBindQuery
 
 	if err := c.ShouldBindQuery(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error":"invalid search paramate"})
+		c.JSON(http.StatusBadRequest, gin.H{"error":"invalid search parameters"})
 		return
 	}
 

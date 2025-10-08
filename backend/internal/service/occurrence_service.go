@@ -13,12 +13,24 @@ import (
 // --- Structs for Occurrence Search ---
 
 type SearchRequest struct {
+	UserID      *uint   `form:"user_id"`
 	
 }
 
 
 type SearchResponse struct {
+	UserID      *uint
+}
 
+type ClassificationJSONB struct {
+	Kingdom string `json;"kingdom"`
+	Phylum string `json;"phylum"`
+	Class string `json;"class"`
+	Order string `json;"order"`
+	Family string `json;"family"`
+	Genus string `json;"genus"`
+	Species string `json:"species"`
+	//others string `json:"others"`
 }
 
 
@@ -109,8 +121,36 @@ func NewOccurrenceService(db *gorm.DB, repo repository.OccurrenceRepository) Occ
 // Search
 
 func(s *occurrenceService) Search(req SeqrchRequest)([]SearchResponse, error){
-	
 
+	repoParams := repository.SearchParams{
+		UserID:		req.UserID,
+
+	}
+
+	raw_results, err := s.occurrenceRepo.Search(repoParams)
+	if err != nil{
+		return nil, err
+	}
+	responses := make([]SearchOccurrencesResponse, 0, len(occurrences))
+	for _, search_results := range raw_results {
+		// JSONBデータからの値の取り出し（安全なチェック）
+		var classificationData ClassificationJSONB
+
+		if search_results.ClassificationJSON != nil && search_results.ClassificationJSON.ClassClassification.Valid {
+			var classificationData ClassificationJSONB
+
+			json.Unmarshal(search_results.ClassificationJSON.ClassClassification.RawMessage, &classificationData)
+
+		dto := SearchOccurrencesResponse{
+			OccurrenceID: search_results.ID,
+			Note:         search_results.Note,
+			CreatedAt:    search_results.CreatedAt,
+			UserName:     search_results.User.UserName,       // Preloadしたデータを使う
+			ProjectName:  search_results.Project.ProjectName,   // Preloadしたデータを使う
+			Species:      classificationData.Species,
+		}
+		responses = append(responses, dto)
+	}
 }
 
 // uintToPtr は uint が 0 でなければそのポインタを、0 なら nil を返すのだ
