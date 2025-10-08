@@ -28,7 +28,7 @@ func (h *OccurrenceHandler) RegisterOccurrenceRoutes(router *gin.RouterGroup) {
 	router.POST("/full-occurrence", h.CreateFullOccurrence)
 
 	// search occurrence data with some others
-	router.POST("/search", h.Search)
+	router.GET("/search", h.Search)
 }
 
 // CreateFullOccurrence はフォームからの全入力をまとめて登録するハンドラなのだ
@@ -57,10 +57,16 @@ func (h *OccurrenceHandler) GetAllLanguages(c *gin.Context) {
 }
 
 func (h *OccurrenceHandler) Search(c *gin.Context) {
-	results, err := h.occurrenceService.Search()
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed get search result"})
+	var req service.SearchRequest //for c.SholdBindQuery
+
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error":"invalid search paramate"})
 		return
 	}
-	c.JSON(http.StatusOK, results)
+
+	results, err := h.occurrenceService.Search(req)
+	if err != nil{
+		c.JSON(http.StatusInternalServarError, gin.H{"error":"Failed search"})
+
+	c.JSON(http.StatusOK,results)
 }

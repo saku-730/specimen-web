@@ -59,33 +59,6 @@ func (r *occurrenceRepository) FindByConditions(conditions *model.Occurrence) ([
 	return occurrences, nil
 }
 
-// Create は新しい発生情報を作成するのだ
-func (r *occurrenceRepository) Create(tx *gorm.DB, occurrence *model.Occurrence) (*model.Occurrence, error) {
-	if err := tx.Create(occurrence).Error; err != nil {
-		return nil, err
-	}
-	return occurrence, nil
-}
-
-// Update は発生情報を更新するのだ
-func (r *occurrenceRepository) Update(tx *gorm.DB, occurrence *model.Occurrence) (*model.Occurrence, error) {
-	// ゼロ値でないフィールドだけを安全に更新するのだ
-	if err := tx.Model(&model.Occurrence{OccurrenceID: occurrence.OccurrenceID}).Updates(occurrence).Error; err != nil {
-		return nil, err
-	}
-	return occurrence, nil
-}
-
-// Delete はIDを元に発生情報を削除するのだ
-func (r *occurrenceRepository) Delete(tx *gorm.DB, id uint) error {
-	if err := tx.Delete(&model.Occurrence{}, id).Error; err != nil {
-		return err
-	}
-	return nil
-}
-
-
-
 func (r *occurrenceRepository) Search(params SearchParams) ([]handler.SearchResult, error){
 	var occurrences []model.Occurrence
 

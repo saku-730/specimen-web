@@ -81,7 +81,7 @@ type LoginRequest struct {
 func (h *UserHandler) Login(c *gin.Context) {
 	var req LoginRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "リクエストの形式が正しくありません"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Bad request format"})
 		return
 	}
 
