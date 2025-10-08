@@ -13,8 +13,37 @@ import (
 // --- Structs for Occurrence Search ---
 
 type SearchRequest struct {
-	UserID      *uint   `form:"user_id"`
-	
+//user_id
+	UserID      *uint   `form:"occ_user_id"`
+	ObservationUserID *uint `form:"obs_user_id"`
+	SpecimenUserID *uint `form:"spc_user_id"`
+	IdentUserID    *uint   `form:"ide_user_id"`
+//classification
+	Kingdom *string `form:"kingdom"`
+	Phylum  *string `form:"phylum"`
+	Class   *string `form:"class"`
+	Order   *string `form:"order"`
+	Family  *string `form:"family"`
+	Genus   *string `form:"genus"`
+	Species *string `form:"species"`
+//Observation
+	ObsMethod     *string   `form:"obs_method"`
+	OccDataStart  *string   `form:"occ_date_start"`
+	OccDataend  *string   `form:"occ_date_end"`
+	ObsDataStart  *string   `form:"obs_date_start"`
+	ObsDataend  *string   `form:"obs_date_end"`
+	IdentDataStart  *string   `form:"ide_date_start"`
+	IdentDataEnd  *string   `form:"ide_date_end"`
+	SpecimenDataStart  *string   `form:"spc_date_start"`
+	SpecimenDataEnd  *string   `form:"spc_date_end"`
+//
+	ProjectID  *string `form:"procject_id"`
+	SpcMethod      *uint   `form:"spc_method"`
+	UserID      *uint   `form:"occ_user_id"`
+	UserID      *uint   `form:"occ_user_id"`
+	UserID      *uint   `form:"occ_user_id"`
+	UserID      *uint   `form:"occ_user_id"`
+	UserID      *uint   `form:"occ_user_id"`
 }
 
 
