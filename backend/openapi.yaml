@@ -1,0 +1,14 @@
+openapi: 3.0.3
+
+info:
+  title:"specimen-web-manage"
+  description:"manage occurrence data(Biodiversity information)"
+  version:"0.0.1"
+
+servers:
+  - url: "http://localhost:"
+    description:"開発サーバー"
+  - url: "http:"
+
+paths:
+

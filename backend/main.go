@@ -16,18 +16,16 @@ func main() {
 	// load config
 	cfg, err := configs.LoadConfig()
 	if err != nil {
-		log.Fatalf("設定の読み込みに失敗: %v", err)
+		log.Fatalf("Failed load config: %v", err)
 	}
 
 	// connect database
 	db, err := database.NewDatabaseConnection(cfg)
 	if err != nil {
-		log.Fatalf("データベース接続に失敗: %v", err)
+		log.Fatalf("Falied connect database: %v", err)
 	}
 
-	// --- ここからが「依存性の注入」による組み立て作業！ ---
-
-	// Repository層を初期化
+	// New each Repository 
 	userRepo := repository.NewUserRepository(db)
 	occurrenceRepo := repository.NewOccurrenceRepository(db)
 	projectRepo := repository.NewProjectRepository(db)
